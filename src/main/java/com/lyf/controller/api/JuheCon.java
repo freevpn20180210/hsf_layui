@@ -13,11 +13,11 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
+import java.sql.Timestamp;
 import java.text.SimpleDateFormat;
-import java.util.Calendar;
-import java.util.Date;
-import java.util.List;
+import java.util.*;
 
 /**
  * 聚合api
@@ -35,12 +35,78 @@ public class JuheCon extends BaseController {
     //ip位置信息
     @RequestMapping("guest")
     @ResponseBody
-    JSONObject guest() throws IOException {
-        String url = "https://m.so.com/position";
+    JSONObject guest(HttpServletRequest request) throws IOException {
+        String ip = (String) request.getSession().getAttribute("ip");
+        String url = null;
+        if (LT.isEmpty(ip)) {
+            url = "https://m.so.com/position";
+        } else {
+            url = "https://m.so.com/position?ip=" + ip;
+        }
         String body = LT.postForm(null, null, url);
         JSONObject rs = JSON.parseObject(body).getJSONObject("data");
         return rs;
     }
+
+    //手动保存今日国内各省油价
+    @RequestMapping("saveTodayOil")
+    @ResponseBody
+    public Boolean saveTodayOil() throws IOException {
+        String url = "http://apis.juhe.cn/gnyj/query?key=bace1d535d49320ec3e0953cd48b5dd8";
+        String body = LT.postForm(null, null, url);
+        JSONArray ja = JSON.parseObject(body).getJSONArray("result");
+        for (Object o : ja) {
+            JSONObject jo = (JSONObject) o;
+            String city = jo.getString("city");
+            String a = jo.getString("0h");
+            String b = jo.getString("92h");
+            String c = jo.getString("95h");
+            String d = jo.getString("98h");
+            Oil oil = new Oil();
+            oil.setCity(city);
+            oil.setA(a);
+            oil.setB(b);
+            oil.setC(c);
+            oil.setD(d);
+            oil.setCreateTime(new Timestamp(new Date().getTime()));
+            dao.save(oil);
+        }
+        return true;
+    }
+
+    //手动保存历史上的今天
+    @RequestMapping("saveToh")
+    @ResponseBody
+    public Boolean saveToh() throws IOException {
+        String url = "http://api.juheapi.com/japi/toh";
+        String key = "41a90f86f48a99dc58da7457b36f62dd";
+        int month = LT.getDateInfoOfToday().getIntValue("month");
+        int day = LT.getDateInfoOfToday().getIntValue("day");
+
+        Map formMap = new LinkedHashMap();
+        formMap.put("v", "1.0");
+        formMap.put("month", String.valueOf(month));
+        formMap.put("day", String.valueOf(day));
+        formMap.put("key", key);
+        String body = LT.postForm(formMap, null, url);
+        JSONArray data = JSON.parseObject(body).getJSONArray("result");
+
+        for (Object o : data) {
+            JSONObject jo = (JSONObject) o;
+            Toh po = new Toh();
+            po.setTitle(jo.getString("title"));
+            po.setDes(jo.getString("des"));
+            po.setYear(jo.getString("year"));
+            po.setMonth(jo.getString("month"));
+            po.setDay(jo.getString("day"));
+            po.setPic(jo.getString("pic"));
+            po.setCreateTime(new Timestamp(new Date().getTime()));
+            dao.save(po);
+        }
+        return true;
+    }
+
+    /*************************************************************************************************************/
 
     //今日日期信息
     @RequestMapping("today")
@@ -71,9 +137,15 @@ public class JuheCon extends BaseController {
     //根据ip获取国内各省近7天的油价趋势(如ip定位在杭州就展现杭州近7天的油价趋势)
     @RequestMapping("getOilTrend")
     @ResponseBody
-    JSONObject getOilTrend() throws IOException {
+    JSONObject getOilTrend(HttpServletRequest request) throws IOException {
         //先查询当前ip的省份
-        String url = "https://m.so.com/position";
+        String ip = (String) request.getSession().getAttribute("ip");
+        String url = null;
+        if (LT.isEmpty(ip)) {
+            url = "https://m.so.com/position";
+        } else {
+            url = "https://m.so.com/position?ip=" + ip;
+        }
         String body = LT.postForm(null, null, url);
         JSONObject jo = JSON.parseObject(body).getJSONObject("data");
 
@@ -83,7 +155,7 @@ public class JuheCon extends BaseController {
                 .replace("市", "")
                 .replace("区", "");
         String city = jo.getJSONObject("position").getString("city");
-        String ip = jo.getString("ip");
+        ip = jo.getString("ip");
         String isp = jo.getJSONObject("position").getString("isp");
 
         //从表中获取该省近7天的油价数据
@@ -135,7 +207,6 @@ public class JuheCon extends BaseController {
         rs.put("c", c);
         rs.put("d", d);
         rs.put("province", province);
-        rs.put("country", country);
         rs.put("city", city);
         rs.put("ip", ip);
         rs.put("isp", isp);

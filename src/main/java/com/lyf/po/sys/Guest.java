@@ -18,6 +18,9 @@ public class Guest implements Serializable {
     @Column(name = "id", insertable = false, nullable = false)
     private Integer id;
 
+    @Column(name = "userId")
+    private Integer userId;
+
     @Column(name = "ip")
     private String ip;
 

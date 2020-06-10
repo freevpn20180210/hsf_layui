@@ -11,7 +11,7 @@
  Target Server Version : 50730
  File Encoding         : 65001
 
- Date: 07/06/2020 01:36:50
+ Date: 08/06/2020 07:30:38
 */
 
 SET NAMES utf8mb4;
@@ -23,13 +23,16 @@ SET FOREIGN_KEY_CHECKS = 0;
 DROP TABLE IF EXISTS `guest`;
 CREATE TABLE `guest`  (
   `id` int(11) NOT NULL AUTO_INCREMENT,
+  `userId` int(11) NULL DEFAULT NULL,
   `ip` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
   `cname` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
   `browser` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
   `dev` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
   `time` datetime(0) NULL DEFAULT NULL,
-  PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 17 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Dynamic;
+  PRIMARY KEY (`id`) USING BTREE,
+  INDEX `userId`(`userId`) USING BTREE,
+  CONSTRAINT `guest_ibfk_1` FOREIGN KEY (`userId`) REFERENCES `user` (`id`) ON DELETE RESTRICT ON UPDATE RESTRICT
+) ENGINE = InnoDB AUTO_INCREMENT = 23 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of guest
@@ -91,7 +94,7 @@ CREATE TABLE `oil`  (
   `d` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
   `createTime` datetime(0) NULL DEFAULT NULL,
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 218 CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '国内油价' ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 249 CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '国内油价' ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of oil
@@ -313,6 +316,37 @@ INSERT INTO `oil` VALUES (214, '云南', '5.19', '5.65', '6.06', '6.74', '2020-0
 INSERT INTO `oil` VALUES (215, '湖北', '5.09', '5.51', '5.90', '6.47', '2020-06-07 00:15:00');
 INSERT INTO `oil` VALUES (216, '浙江', '5.09', '5.49', '5.84', '6.39', '2020-06-07 00:15:00');
 INSERT INTO `oil` VALUES (217, '湖南', '5.16', '5.47', '5.82', '6.62', '2020-06-07 00:15:00');
+INSERT INTO `oil` VALUES (218, '北京', '5.13', '5.50', '5.86', '6.84', '2020-06-08 00:15:00');
+INSERT INTO `oil` VALUES (219, '上海', '5.08', '5.47', '5.82', '6.52', '2020-06-08 00:15:00');
+INSERT INTO `oil` VALUES (220, '江苏', '5.07', '5.49', '5.84', '6.72', '2020-06-08 00:15:00');
+INSERT INTO `oil` VALUES (221, '天津', '5.09', '5.49', '5.80', '6.72', '2020-06-08 00:15:00');
+INSERT INTO `oil` VALUES (222, '重庆', '5.19', '5.59', '5.91', '6.65', '2020-06-08 00:15:00');
+INSERT INTO `oil` VALUES (223, '江西', '5.14', '5.48', '5.88', '6.88', '2020-06-08 00:15:00');
+INSERT INTO `oil` VALUES (224, '辽宁', '5.03', '5.48', '5.84', '6.36', '2020-06-08 00:15:00');
+INSERT INTO `oil` VALUES (225, '安徽', '5.13', '5.49', '5.91', '6.74', '2020-06-08 00:15:00');
+INSERT INTO `oil` VALUES (226, '内蒙古', '5.01', '5.45', '5.82', '6.39', '2020-06-08 00:15:00');
+INSERT INTO `oil` VALUES (227, '福建', '5.10', '5.49', '5.86', '6.41', '2020-06-08 00:15:00');
+INSERT INTO `oil` VALUES (228, '宁夏', '5.01', '5.43', '5.73', '6.60', '2020-06-08 00:15:00');
+INSERT INTO `oil` VALUES (229, '甘肃', '5.02', '5.41', '5.78', '6.15', '2020-06-08 00:15:00');
+INSERT INTO `oil` VALUES (230, '青海', '5.05', '5.46', '5.85', '0', '2020-06-08 00:15:00');
+INSERT INTO `oil` VALUES (231, '广东', '5.11', '5.53', '5.99', '6.85', '2020-06-08 00:15:00');
+INSERT INTO `oil` VALUES (232, '山东', '5.09', '5.48', '5.88', '6.60', '2020-06-08 00:15:00');
+INSERT INTO `oil` VALUES (233, '广西', '5.17', '5.57', '6.02', '6.85', '2020-06-08 00:15:00');
+INSERT INTO `oil` VALUES (234, '山西', '5.15', '5.48', '5.91', '6.61', '2020-06-08 00:15:00');
+INSERT INTO `oil` VALUES (235, '贵州', '5.21', '5.63', '5.95', '6.85', '2020-06-08 00:15:00');
+INSERT INTO `oil` VALUES (236, '陕西', '5.02', '5.41', '5.72', '6.38', '2020-06-08 00:15:00');
+INSERT INTO `oil` VALUES (237, '海南', '5.19', '6.62', '7.02', '7.91', '2020-06-08 00:15:00');
+INSERT INTO `oil` VALUES (238, '四川', '5.21', '5.56', '5.99', '6.52', '2020-06-08 00:15:00');
+INSERT INTO `oil` VALUES (239, '河北', '5.09', '5.49', '5.80', '6.62', '2020-06-08 00:15:00');
+INSERT INTO `oil` VALUES (240, '西藏', '5.67', '6.41', '6.77', '0', '2020-06-08 00:15:00');
+INSERT INTO `oil` VALUES (241, '河南', '5.09', '5.50', '5.88', '6.53', '2020-06-08 00:15:00');
+INSERT INTO `oil` VALUES (242, '新疆', '4.99', '5.38', '5.79', '6.46', '2020-06-08 00:15:00');
+INSERT INTO `oil` VALUES (243, '黑龙江', '4.95', '5.48', '5.88', '6.70', '2020-06-08 00:15:00');
+INSERT INTO `oil` VALUES (244, '吉林', '5.03', '5.47', '5.90', '6.43', '2020-06-08 00:15:00');
+INSERT INTO `oil` VALUES (245, '云南', '5.19', '5.65', '6.06', '6.74', '2020-06-08 00:15:00');
+INSERT INTO `oil` VALUES (246, '湖北', '5.09', '5.51', '5.90', '6.47', '2020-06-08 00:15:00');
+INSERT INTO `oil` VALUES (247, '浙江', '5.09', '5.49', '5.84', '6.39', '2020-06-08 00:15:00');
+INSERT INTO `oil` VALUES (248, '湖南', '5.16', '5.47', '5.82', '6.62', '2020-06-08 00:15:00');
 
 -- ----------------------------
 -- Table structure for pan
@@ -328,7 +362,7 @@ CREATE TABLE `pan`  (
   PRIMARY KEY (`id`) USING BTREE,
   INDEX `userId`(`userId`) USING BTREE,
   CONSTRAINT `pan_ibfk_1` FOREIGN KEY (`userId`) REFERENCES `user` (`id`) ON DELETE RESTRICT ON UPDATE RESTRICT
-) ENGINE = InnoDB AUTO_INCREMENT = 59 CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '我的网盘' ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 10 CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '我的网盘' ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of pan
@@ -479,7 +513,7 @@ CREATE TABLE `toh`  (
   `pic` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
   `createtime` datetime(0) NULL DEFAULT NULL,
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 162 CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '历史上的今天' ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 192 CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '历史上的今天' ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of toh
@@ -645,6 +679,36 @@ INSERT INTO `toh` VALUES (158, '中央军委举行晋升上将军官军衔仪式
 INSERT INTO `toh` VALUES (159, '动画片《花木兰》风靡美国', '1998年6月7日 (农历五月十三)，动画片《花木兰》风靡美国。', '1998', '6', '7', 'http://juheimg.oss-cn-hangzhou.aliyuncs.com/toh/200905/17/8C162536989.jpg', '2020-06-07 00:15:01');
 INSERT INTO `toh` VALUES (160, '湛江特大走私受贿案主犯被处决', '1999年6月7日 (农历四月廿四)，湛江特大走私受贿案主犯被处决。', '1999', '6', '7', '', '2020-06-07 00:15:01');
 INSERT INTO `toh` VALUES (161, '全国农村税费改革试点工作会议在北京结束', '2005年6月7日 (农历五月初一)，全国农村税费改革试点工作会议在北京结束。', '2005', '6', '7', '', '2020-06-07 00:15:01');
+INSERT INTO `toh` VALUES (162, '明孝宗朱祐樘因病逝世，“弘治中兴”结束', '在515年前的今天，1505年6月8日 (农历五月初七)，明孝宗朱祐樘因病逝世，“弘治中兴”结束。', '1505', '6', '8', 'http://juheimg.oss-cn-hangzhou.aliyuncs.com/toh/201106/10/31223754252.jpg', '2020-06-08 00:15:00');
+INSERT INTO `toh` VALUES (163, '中世纪的一次重大宗教战争——卡佩尔战争爆发', '在491年前的今天，1529年6月8日 (农历五月初三)，中世纪的一次重大宗教战争——卡佩尔战争爆发。', '1529', '6', '8', '', '2020-06-08 00:15:00');
+INSERT INTO `toh` VALUES (164, '德国作曲家舒曼诞辰', '在210年前的今天，1810年6月8日 (农历五月初七)，德国作曲家舒曼诞辰。', '1810', '6', '8', 'http://juheimg.oss-cn-hangzhou.aliyuncs.com/toh/200912/8/AE23287136.jpg', '2020-06-08 00:15:00');
+INSERT INTO `toh` VALUES (165, '美国建筑师弗兰克·劳埃德·赖特诞生', '在153年前的今天，1867年6月8日 (农历五月初七)，美国建筑师弗兰克·劳埃德·赖特诞生。', '1867', '6', '8', 'http://juheimg.oss-cn-hangzhou.aliyuncs.com/toh/201106/8/67215740485.jpg', '2020-06-08 00:15:00');
+INSERT INTO `toh` VALUES (166, '清政府撤回留美学生', '在139年前的今天，1881年6月8日 (农历五月十二)，清政府撤回留美学生。', '1881', '6', '8', '', '2020-06-08 00:15:00');
+INSERT INTO `toh` VALUES (167, 'DNA发现者弗朗西斯·克里克出生', '在104年前的今天，1916年6月8日 (农历五月初八)，DNA发现者弗朗西斯·克里克出生。', '1916', '6', '8', 'http://juheimg.oss-cn-hangzhou.aliyuncs.com/toh/201107/28/CB14658656.jpg', '2020-06-08 00:15:00');
+INSERT INTO `toh` VALUES (168, '印尼前总统苏哈托诞生', '在99年前的今天，1921年6月8日 (农历五月初三)，印尼前总统苏哈托诞生。', '1921', '6', '8', 'http://juheimg.oss-cn-hangzhou.aliyuncs.com/toh/201006/10/DF22533224.jpg', '2020-06-08 00:15:00');
+INSERT INTO `toh` VALUES (169, '人类首次向珠穆朗玛峰冲击未果', '在96年前的今天，1924年6月8日 (农历五月初七)，人类首次向珠穆朗玛峰冲击未果。', '1924', '6', '8', 'http://juheimg.oss-cn-hangzhou.aliyuncs.com/toh/200905/17/57164340158.jpg', '2020-06-08 00:15:00');
+INSERT INTO `toh` VALUES (170, '乡村工学团试验计划开始推广', '在88年前的今天，1932年6月8日 (农历五月初五)，乡村工学团试验计划开始推广。', '1932', '6', '8', '', '2020-06-08 00:15:00');
+INSERT INTO `toh` VALUES (171, '作曲家、民族乐器演奏家刘天华逝世', '在88年前的今天，1932年6月8日 (农历五月初五)，作曲家、民族乐器演奏家刘天华逝世。', '1932', '6', '8', 'http://juheimg.oss-cn-hangzhou.aliyuncs.com/toh/201303/10/224188409.jpg', '2020-06-08 00:15:00');
+INSERT INTO `toh` VALUES (172, '藏本英明事件弥布战争风云', '在86年前的今天，1934年6月8日 (农历四月廿七)，藏本英明事件弥布战争风云。', '1934', '6', '8', 'http://juheimg.oss-cn-hangzhou.aliyuncs.com/toh/200905/17/79164115385.jpg', '2020-06-08 00:15:00');
+INSERT INTO `toh` VALUES (173, '国共两党庐山谈判', '在83年前的今天，1937年6月8日 (农历四月三十)，国共两党庐山谈判。', '1937', '6', '8', 'http://juheimg.oss-cn-hangzhou.aliyuncs.com/toh/201206/8/BB8926312.jpg', '2020-06-08 00:15:00');
+INSERT INTO `toh` VALUES (174, '朱自清宁肯饿死不食美国粮', '在72年前的今天，1948年6月8日 (农历五月初二)，朱自清宁肯饿死不食美国粮。', '1948', '6', '8', 'http://juheimg.oss-cn-hangzhou.aliyuncs.com/toh/200905/17/7C163810304.jpg', '2020-06-08 00:15:00');
+INSERT INTO `toh` VALUES (175, '我国与缅甸建立外交关系', '1950年6月8日 (农历四月廿三)，我国与缅甸建立外交关系。', '1950', '6', '8', 'http://juheimg.oss-cn-hangzhou.aliyuncs.com/toh/200908/30/104922913.jpg', '2020-06-08 00:15:00');
+INSERT INTO `toh` VALUES (176, '毛泽东亲自起草“反右”文件', '1957年6月8日 (农历五月十一)，毛泽东亲自起草“反右”文件。', '1957', '6', '8', '', '2020-06-08 00:15:00');
+INSERT INTO `toh` VALUES (177, '我国反右派运动开始', '1957年6月8日 (农历五月十一)，我国反右派运动开始。', '1957', '6', '8', 'http://juheimg.oss-cn-hangzhou.aliyuncs.com/toh/200905/17/EE163657723.jpg', '2020-06-08 00:15:00');
+INSERT INTO `toh` VALUES (178, '大跃进运动放出第一颗亩产卫星', '1958年6月8日 (农历四月廿一)，大跃进运动放出第一颗亩产卫星。', '1958', '6', '8', 'http://juheimg.oss-cn-hangzhou.aliyuncs.com/toh/200905/17/70163652442.jpg', '2020-06-08 00:15:00');
+INSERT INTO `toh` VALUES (179, '抗日名将蒋光鼐逝世', '1967年6月8日 (农历五月初一)，抗日名将蒋光鼐逝世。', '1967', '6', '8', 'http://juheimg.oss-cn-hangzhou.aliyuncs.com/toh/201006/10/E6225352777.jpg', '2020-06-08 00:15:00');
+INSERT INTO `toh` VALUES (180, '中国诗人胡风病逝', '1985年6月8日 (农历四月二十)，中国诗人胡风病逝。', '1985', '6', '8', 'http://juheimg.oss-cn-hangzhou.aliyuncs.com/toh/200905/17/6D163123638.jpg', '2020-06-08 00:15:00');
+INSERT INTO `toh` VALUES (181, '瓦尔德海姆轻松当选奥地利总统', '1986年6月8日 (农历五月初二)，瓦尔德海姆轻松当选奥地利总统。', '1986', '6', '8', 'http://juheimg.oss-cn-hangzhou.aliyuncs.com/toh/200905/17/04163056581.jpg', '2020-06-08 00:15:00');
+INSERT INTO `toh` VALUES (182, '第十四届世界杯足球赛开幕', '1990年6月8日 (农历五月十六)，第十四届世界杯足球赛开幕。', '1990', '6', '8', 'http://juheimg.oss-cn-hangzhou.aliyuncs.com/toh/200905/17/0D163026493.jpg', '2020-06-08 00:15:00');
+INSERT INTO `toh` VALUES (183, '中科院首批外籍院士产生', '1994年6月8日 (农历四月廿九)，中科院首批外籍院士产生。', '1994', '6', '8', '', '2020-06-08 00:15:00');
+INSERT INTO `toh` VALUES (184, '乌俄达成分割黑海舰队协议', '1994年6月8日 (农历四月廿九)，乌俄达成分割黑海舰队协议。', '1994', '6', '8', '', '2020-06-08 00:15:00');
+INSERT INTO `toh` VALUES (185, '我国研制出高功率氦氖激光器', '1995年6月8日 (农历五月十一)，我国研制出高功率氦氖激光器。', '1995', '6', '8', '', '2020-06-08 00:15:00');
+INSERT INTO `toh` VALUES (186, '美公布教堂纵火案调查报告', '1997年6月8日 (农历五月初四)，美公布教堂纵火案调查报告。', '1997', '6', '8', '', '2020-06-08 00:15:00');
+INSERT INTO `toh` VALUES (187, '印度两千余人死于热浪', '1998年6月8日 (农历五月十四)，印度两千余人死于热浪。', '1998', '6', '8', '', '2020-06-08 00:15:00');
+INSERT INTO `toh` VALUES (188, '宁波杭州湾跨海大桥奠基', '2003年6月8日 (农历五月初九)，宁波杭州湾跨海大桥奠基。', '2003', '6', '8', 'http://juheimg.oss-cn-hangzhou.aliyuncs.com/toh/200406/8/5C132957157.jpg', '2020-06-08 00:15:00');
+INSERT INTO `toh` VALUES (189, '首届中国陶瓷艺术大师晋佩章逝世', '2008年6月8日 (农历五月初五)，首届中国陶瓷艺术大师晋佩章逝世。', '2008', '6', '8', 'http://juheimg.oss-cn-hangzhou.aliyuncs.com/toh/201106/8/79235628898.jpg', '2020-06-08 00:15:00');
+INSERT INTO `toh` VALUES (190, '李白遇赦', '在1260年前的今天，0760年6月8日 (农历闰四月二十)，李白遇赦。', '760', '6', '8', 'http://juheimg.oss-cn-hangzhou.aliyuncs.com/toh/201206/8/0C8716953.jpg', '2020-06-08 00:15:00');
+INSERT INTO `toh` VALUES (191, '马殷建立楚国', '在1093年前的今天，0927年6月8日 (农历五月初六)，马殷建立楚国。', '927', '6', '8', '', '2020-06-08 00:15:00');
 
 -- ----------------------------
 -- Table structure for user
@@ -675,7 +739,7 @@ CREATE TABLE `user`  (
 -- Records of user
 -- ----------------------------
 INSERT INTO `user` VALUES (1, 'admin', '7ffb9dc532fbd051990f9befa23d848d', '哈萨ki', '李杨帆', '', '男', '18072861727', '704799339@qq.com', 1, '杭州', '开发者', 0, 20480, 20480, '2020-06-06 00:00:00', '2020-06-06 00:00:00');
-INSERT INTO `user` VALUES (17, 'test1', '5a105e8b9d40e1329780d62ea2265d8a', '测试用户1', '无名氏', 'userPic/我_20200607013324.jpg', '男', '12345678910', '', NULL, '', '', 0, 100, 100, '2020-06-06 00:00:00', '2020-06-06 00:00:00');
+INSERT INTO `user` VALUES (17, 'test1', '5a105e8b9d40e1329780d62ea2265d8a', '测试用户1', '无名氏', '', '男', '12345678910', '', NULL, '', '', 0, 100, 100, '2020-06-06 00:00:00', '2020-06-06 00:00:00');
 
 -- ----------------------------
 -- Table structure for user_role

@@ -77,6 +77,7 @@
 <script src="<%=path%>/my/login/app.js"></script>
 <script src="<%=path%>/layuiadmin/layui/layui.js"></script>
 <script src="<%=path%>/my/fast.js"></script>
+<script src="http://pv.sohu.com/cityjson"></script>
 
 <script type="text/javascript">
 
@@ -158,52 +159,50 @@
                     document.querySelector(".login").style.display = "none"
 
                     //从第三方接口获取登录信息
-                    $.post('<%=path%>/juhe/guest', (data) => {
-                        var ip = data.ip;
-                        var cname = data.position.city;
-                        var time = dateFtt("yyyy-MM-dd HH:mm:ss", new Date());
-                        var browser = whatBrowser()
-                        var dev = isPC() ? '电脑' : '手机'
-                        //登录
-                        $.ajax(
-                            {
-                                url: '<%=path%>/userLogin',
-                                data: {
-                                    verifyCode: verifyCode,
-                                    name: name,
-                                    pwd: pwd,
-                                    ip: ip,
-                                    cname: cname,
-                                    time: time,
-                                    browser: browser,
-                                    dev: dev,
-                                    rememberMe: rememberMe,
-                                },
-                                async: false,
-                                type: 'post',
-                                success: function (rs) {
-                                    if (rs.ok) {
-                                        //进入首页
-                                        location.href = '<%=path%>/'
-                                    } else {
-                                        //移除加载动画
-                                        removeClass(document.querySelector(".sk-rotating-plane"), "active")
-                                        document.querySelector(".login").style.display = "block"
-                                        //刷新验证码
-                                        $('#verifyCodeImg')[0].src = '<%=path%>/getKaptcha'
-                                        layer.msg(rs.msg)
-                                        $('input[name=verifyCode]').val('')
-                                        $('input[name=verifyCode]').focus()
-                                    }
-                                },
-                                error: function () {
+                    var ip = returnCitySN.cip;
+                    var cname = returnCitySN.cname;
+                    var time = dateFtt("yyyy-MM-dd HH:mm:ss", new Date());
+                    var browser = whatBrowser()
+                    var dev = isPC() ? '电脑' : '手机'
+                    //登录
+                    $.ajax(
+                        {
+                            url: '<%=path%>/userLogin',
+                            data: {
+                                verifyCode: verifyCode,
+                                name: name,
+                                pwd: pwd,
+                                ip: ip,
+                                cname: cname,
+                                time: time,
+                                browser: browser,
+                                dev: dev,
+                                rememberMe: rememberMe,
+                            },
+                            async: false,
+                            type: 'post',
+                            success: function (rs) {
+                                if (rs.ok) {
+                                    //进入首页
+                                    location.href = '<%=path%>/'
+                                } else {
                                     //移除加载动画
                                     removeClass(document.querySelector(".sk-rotating-plane"), "active")
                                     document.querySelector(".login").style.display = "block"
-                                    layer.msg("服务器出错！");
+                                    //刷新验证码
+                                    $('#verifyCodeImg')[0].src = '<%=path%>/getKaptcha'
+                                    layer.msg(rs.msg)
+                                    $('input[name=verifyCode]').val('')
+                                    $('input[name=verifyCode]').focus()
                                 }
-                            })
-                    })
+                            },
+                            error: function () {
+                                //移除加载动画
+                                removeClass(document.querySelector(".sk-rotating-plane"), "active")
+                                document.querySelector(".login").style.display = "block"
+                                layer.msg("服务器出错！");
+                            }
+                        })
                 } else {
                     layer.msg('请输入验证码')
                 }

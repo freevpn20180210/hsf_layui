@@ -1,0 +1,73 @@
+#author:lyf
+#20200605
+#不可格式化代码
+
+#############################################生产环境prod############################################
+spring:
+  application:
+    name: hsf_layui
+  mvc:
+    view:
+      prefix: /views/
+    thymeleaf:
+      cache: false
+  datasource:
+    type: com.alibaba.druid.pool.DruidDataSource
+    driver-class-name: com.mysql.jdbc.Driver
+    url: jdbc:mysql://localhost/hsf_layui?useSSL=false&useUnicode=true&characterEncoding=utf-8&autoReconnect=true
+    username: root
+    password: LYFnjt9188@
+    druid:
+      #不配置就无法监控sql
+      filters: stat,wall,slf4j
+      #是否开启防火墙，默认 false
+      wall:
+        enabled: true
+        #数据库类型
+        db-type: mysql
+        #检测到攻击 SQL 时输出错误日志，默认 false
+        log-violation: true
+        #检测到攻击 SQL 时抛出异常，默认 true
+        throw-exception: false
+      #druid监控页面
+      stat-view-servlet:
+        url-pattern: "/druid/*"
+        #IP白名单(没有配置或者为空，则允许所有访问)
+        allow:
+        #IP黑名单 (存在共同时，deny优先于allow)
+        deny:
+        #登录名
+        login-username: admin
+        #登录密码
+        login-password: 20200606
+  jpa:
+    properties:
+      hibernate:
+        dialect: com.lyf.config.MySQL5LocalDialect
+        show_sql: true
+        format_sql: false
+        autoReconnect: true
+    hibernate:
+      naming:
+        physical-strategy: org.hibernate.boot.model.naming.PhysicalNamingStrategyStandardImpl
+    #      ddl-auto: update
+    #  aop:
+    #    proxy-target-class: true
+
+server:
+  port: 80
+  servlet:
+    jsp:
+      init-parameters:
+        development: true #本地开发修改页面实时生效
+#    context-path: /watch
+
+logging:
+  level:
+    org:
+      hibernate:
+        type:
+          descriptor:
+            sql:
+              BasicBinder: trace
+        sql: trace

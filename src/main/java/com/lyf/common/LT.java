@@ -20,6 +20,9 @@ import java.io.*;
 import java.math.BigDecimal;
 import java.net.URLDecoder;
 import java.net.URLEncoder;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.*;
@@ -334,20 +337,13 @@ public class LT {
         JSONArray ja = new JSONArray();
         for (MultipartFile file : files) {
             JSONObject jo = new JSONObject(true);
-            //文件保存路径:target->resources->dir
-            String path = null;
             try {
-                //spring boot的文件上传路径--开发环境
-//                path = ResourceUtils.getURL("classpath:META-INF/resources").getPath() + "/" + dir;
-
-                //spring boot的文件上传路径--linux生产环境
-                path = getPath(dir);
-
-                //如果保存路径不存在则创建相应目录
-                File target = new File(path);
-                if (!target.exists()) {
-                    target.mkdirs();
+                //得到文件上传路径
+                Path directory = Paths.get(dir);
+                if (!Files.exists(directory)) {
+                    Files.createDirectories(directory);
                 }
+
                 //将原文件名(包括后缀名)倒转--以下写法是为了解决有的文件名中有N多个点导致保存问题的冲突
                 StringBuilder sb = new StringBuilder();
                 sb.append(file.getOriginalFilename());
@@ -370,7 +366,7 @@ public class LT {
                 jo.put("fileName", finalFileName);
                 jo.put("size", size);
                 //保存文件
-                file.transferTo(new File(path + "/" + finalFileName));
+                file.transferTo(new File(directory + "/" + finalFileName));
                 ja.add(jo);
             } catch (Exception e) {
                 e.printStackTrace();
@@ -922,45 +918,16 @@ public class LT {
      * @param filePath 文件相对路径
      * @return 是否删除
      */
-    public static boolean deleteFile(String filePath) throws FileNotFoundException {
+    public static boolean deleteFile(String filePath) {
         boolean result = false;
-        //spring boot的文件删除路径--开发环境
-//        String path = ResourceUtils.getURL("classpath:META-INF/resources").getPath() + "/" + filePath;
-
-        //spring boot的文件删除地址--linux生产环境
-        String path = getPath(filePath);
-        File file = new File(path);
+        //得到文件删除路径
+        Path directory = Paths.get(filePath);
+        File file = new File(directory.toString());
         if (file.exists()) {
             file.delete();
             result = true;
         }
         return result;
-    }
-
-    /**
-     * 得到系统上传删除文件的路径
-     *
-     * @param filePath
-     * @return
-     * @throws FileNotFoundException
-     */
-    public static String getPath(String filePath) throws FileNotFoundException {
-        String path = ResourceUtils.getURL("classpath:").getPath();
-        System.out.println("classpath:" + path);
-
-        File self = new File(path);
-        //得到上级目录路径
-        String parentPath = self.getParent();
-        System.out.println("parentPath:" + parentPath);
-
-        File parent = new File(parentPath);
-        //得到上级目录的上级目录路径
-        String grandpaPath = parent.getParent();
-        System.out.println("grandpaPath:" + grandpaPath);
-
-        path = grandpaPath + "\\" + filePath;
-        System.out.println("最终路径:" + path);
-        return path;
     }
 
     /**

@@ -63,13 +63,15 @@ public class Login extends BaseController {
         try {
             //认证
             subject.login(token);
-            User principal = (User) subject.getPrincipal();
+            user = (User) subject.getPrincipal();
             //存入session
-            request.getSession().setAttribute("user", principal);
+            request.getSession().setAttribute("user", user);
+            request.getSession().setAttribute("ip", guest.getIp());
             //保存登录日志
+            guest.setUserId(user.getId());
             dao.save(guest);
             //设置session失效时间(单位:秒)--设0永不过期
-            request.getSession().setMaxInactiveInterval(24 * 60 * 60 * 30);
+            request.getSession().setMaxInactiveInterval(1 * 1 * 60 * 60);
             rs.put("ok", true);
         } catch (IncorrectCredentialsException e) {
             e.printStackTrace();

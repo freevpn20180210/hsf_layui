@@ -65,7 +65,7 @@ public class UserInfoCon extends BaseController {
     public JSONObject picUpload(MultipartFile[] file) {
         JSONObject rs = new JSONObject();
         //输出目录
-        String dir = "userPic";
+        String dir = "File/userPic";
         JSONArray ja = LT.multipartUpload2(file, dir);
         if (ja.size() > 0) {
             JSONObject jo = (JSONObject) ja.get(0);

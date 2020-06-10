@@ -14,8 +14,10 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.converter.HttpMessageConverter;
 import org.springframework.web.multipart.commons.CommonsMultipartResolver;
+import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
 import org.springframework.web.servlet.config.annotation.ViewControllerRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
+import org.springframework.web.socket.server.standard.ServerEndpointExporter;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -47,6 +49,7 @@ public class MainConfig implements WebMvcConfigurer, WebServerFactoryCustomizer<
         converters.add(fastJsonHttpMessageConverter);
     }
 
+    //页面跳转
     //spring boot欢迎页
     @Override
     public void addViewControllers(ViewControllerRegistry registry) {
@@ -108,9 +111,18 @@ public class MainConfig implements WebMvcConfigurer, WebServerFactoryCustomizer<
     }
 
     //WebSocket配置,在打包成war包时要注释,否则websocket不可用
-   /* @Bean
+    @Bean
     public ServerEndpointExporter serverEndpointExporter() {
         return new ServerEndpointExporter();
-    }*/
+    }
+
+    //自定义资源映射
+    //若为jar包运行,对新建的外部文件夹进行注册,使以jar包的方式运行能读取和写入资源
+    @Override
+    public void addResourceHandlers(ResourceHandlerRegistry registry) {
+        //只拦截以File开头的url,若为/**,则拦截所有的url,会导致静态资源无法访问
+        registry.addResourceHandler("/File/**")
+                .addResourceLocations("file:File/");
+    }
 
 }

@@ -13,7 +13,7 @@
     <version>0.0.1-SNAPSHOT</version>
     <name>hsf_layui</name>
     <description>Demo project for Spring Boot</description>
-    <packaging>war</packaging>
+    <!--    <packaging>war</packaging>-->
 
     <!--author:lyf-->
     <!--20200605-->
@@ -203,24 +203,26 @@
             <plugin>
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>
-                <!--                &lt;!&ndash;若为jar包运行,必须指定spring-boot-maven-plugin版本为1.4.2.RELEASE，其它版本的都无法正常运行&ndash;&gt;-->
-                <!--                <version>1.4.2.RELEASE</version>-->
-                <!--                &lt;!&ndash;若为jar包运行,必须指定主类&ndash;&gt;-->
-                <!--                <configuration>-->
-                <!--                    <mainClass>com.lyf.Start</mainClass>-->
-                <!--                </configuration>-->
+                <!--若为jar包运行,必须指定spring-boot-maven-plugin版本为1.4.2.RELEASE，其它版本的都无法正常运行-->
+                <version>1.4.2.RELEASE</version>
+                <!--若为jar包运行,必须指定主类-->
+                <configuration>
+                    <mainClass>com.lyf.Start</mainClass>
+                </configuration>
             </plugin>
         </plugins>
-        <!--        &lt;!&ndash;若为jar包运行,必须设置targetPath只能是 META-INF/resources&ndash;&gt;-->
-        <!--        <resources>-->
-        <!--            <resource>-->
-        <!--                <directory>src/main/webapp</directory>-->
-        <!--                <targetPath>META-INF/resources</targetPath>-->
-        <!--                <includes>-->
-        <!--                    <include>**/**</include>-->
-        <!--                </includes>-->
-        <!--            </resource>-->
-        <!--        </resources>-->
+        <!--若为jar包运行,必须设置资源文件夹,不设置就无法访问-->
+        <resources>
+            <resource>
+                <directory>src/main/java</directory>
+                <includes>
+                    <include>**/*.xml</include>
+                </includes>
+            </resource>
+            <resource>
+                <directory>src/main/resources</directory>
+            </resource>
+        </resources>
     </build>
 
 </project>

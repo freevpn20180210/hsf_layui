@@ -117,7 +117,7 @@ public class PanCon extends BaseController {
             }
         }
         //输出目录
-        String dir = "pan/" + user.getId();
+        String dir = "File/pan/" + user.getId();
         JSONArray ja = LT.multipartUpload2(file, dir);
         if (ja.size() > 0) {
             JSONObject jo = (JSONObject) ja.get(0);
@@ -145,6 +145,7 @@ public class PanCon extends BaseController {
     @RequestMapping("del")
     @ResponseBody
     JSONObject del(Integer[] ids) throws FileNotFoundException {
+        JSONObject rs = new JSONObject();
         List<String> list = new ArrayList();
         List<String> list1 = new ArrayList();
         List<Long> list2 = new ArrayList();
@@ -156,12 +157,17 @@ public class PanCon extends BaseController {
             list1.add(size);
         }
         //根据文件路径删除硬盘上的文件,删除文件
+        //文件是否存在的flags
+        List<Boolean> flags = new ArrayList<>();
         for (String path : list) {
-            LT.deleteFile(path);
+            flags.add(LT.deleteFile(path));
         }
         //删除表中数据
         dao.delAll(Pan.class, ids);
-
+        if (flags.contains(false)) {
+            rs.put("ok", true);
+            return rs;
+        }
         //将文件大小(含KB)->long
         for (String size : list1) {
             list2.add(Long.parseLong(size.substring(0, size.length() - 2)));
@@ -177,10 +183,8 @@ public class PanCon extends BaseController {
         //删除完毕用户网盘的可用容量=可用容量+已删除的文件总大小
         user.setUsablePanSize(user.getUsablePanSize() + LT.div(totalFileSize, 1024, 2));
         dao.update(user);
-
-        JSONObject jo = new JSONObject();
-        jo.put("ok", true);
-        return jo;
+        rs.put("ok", true);
+        return rs;
     }
 
     //得到登录的用户的网盘容量信息
